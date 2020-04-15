@@ -837,6 +837,8 @@ public class BigInt extends Number implements Comparable<BigInt>
 	*/
 	private void usubMag(final long s)
 	{
+		if(dig.length<=2){ realloc(3); len = 2; }  // KL(m) copied from uaddMag
+		
 		final long sh = s>>>32, sl = s&mask;
 		long dif = (dig[0]&mask) - sl;
 		dig[0] = (int)dif;
@@ -849,7 +851,7 @@ public class BigInt extends Number implements Comparable<BigInt>
 			for(; dig[i]==0; i++) --dig[i];
 			if(--dig[i]==0 && i+1==len) --len;
 		}
-		if(len==2 && dig[1]==0) --len;
+		else if(len==2 && dig[1]==0) --len; // KL(m) changed to resemble uaddMag-code
 	}
 	/**
 	* Adds an unsigned long to this number.
